@@ -1,1 +1,6 @@
 pyTelegramBotAPI
+telebot
+sqlite3
+schedule
+Thread
+sleep
