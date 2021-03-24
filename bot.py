@@ -69,8 +69,41 @@ def get_text_messages(message):
     else:
         bot.send_message(message.from_user.id, 'Не понимаю, что это значит.')
 
+
 def send_notifications():
     try:
         sqlite_connection = sqlite3.connect('db.db')
         cursor = sqlite_connection.cursor()
         print("База данных создана и успешно подключена к SQLite")
+
+        sqlite_select_query = f"SELECT * FROM users"
+        cursor.execute(sqlite_select_query)
+        record = cursor.fetchall()
+        print("Результат SQLite: ", record)
+
+        for user in record:
+            user_id = user[0]
+            user_class = user[1]
+            bot.send_message(user_id, f'Скоро урок у Вас урок {user_class}!')
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Ошибка при подключении к sqlite", error)
+    finally:
+        if (sqlite_connection):
+            sqlite_connection.close()
+            print("Соединение с SQLite закрыто")
+
+
+stat_lessons_times = ["08:14", "09:14", "10:19", "11:19", "12:19", "13:19", "14:19"]
+for start_lesson_time in stat_lessons_times:
+    schedule.every().monday.at(start_lesson_time).do(send_notifications)
+    schedule.every().tuesday.at(start_lesson_time).do(send_notifications)
+    schedule.every().wednesday.at(start_lesson_time).do(send_notifications)
+    schedule.every().thursday.at(start_lesson_time).do(send_notifications)
+    schedule.every().friday.at(start_lesson_time).do(send_notifications)
+
+
+Thread(target=schedule_checker).start()
+bot.polling(none_stop=True)
