@@ -1,6 +1,3 @@
 pyTelegramBotAPI
-import telebot
-import sqlite3
-import schedule
-from threading import Thread
-from time import sleep
+telebot
+
