@@ -47,7 +47,7 @@ def class_input(message):
     bot.register_next_step_handler(message, notifications_type_input)
 
 
-@bot.message_handler(commands=['time'])  # комманда /time будет менять время уведомлений юзера
+@bot.message_handler(commands=['/time'])  # комманда /time будет менять время уведомлений юзера
 def notifications_type_input(message):
     print('Start notifications_type_input')
     text = message.text
